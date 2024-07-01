@@ -1,0 +1,15 @@
+﻿@model UserListItemViewModel
+
+<h2>Edit User</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Forename"></label>
+        <input asp-for="Forename" class="form-control" />
+    </div>
+    
+
+    <button type="submit" class="btn btn-primary">Update User</button>
+</form>
