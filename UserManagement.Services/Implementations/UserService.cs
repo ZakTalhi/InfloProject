@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using UserManagement.Data;
 using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces;
@@ -12,13 +13,14 @@ public class UserService : IUserService
     private readonly IUserAuditService _userAuditService;
     private readonly IDataContext _dataAccess; 
 
-     
 
-    public UserService(IDataContext dataAccess, IUserAuditService userAuditService)
+    public UserService(IDataContext dataAccess, IUserAuditService userAuditService) 
     {
         _dataAccess = dataAccess;
-        _userAuditService = userAuditService;
+        _userAuditService = userAuditService; 
     }
+
+  
     public bool Delete(User user)
     {
         try

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 
@@ -8,6 +10,11 @@ namespace UserManagement.Data;
 public class DataContext : DbContext, IDataContext
 {
     public DataContext() => Database.EnsureCreated();
+
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder options)
+    // => options.UseSqlServer("YourConnectionStringHere");
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseInMemoryDatabase("UserManagement.Data.DataContext");
@@ -47,5 +54,10 @@ public class DataContext : DbContext, IDataContext
     {
         base.Remove(entity);
         SaveChanges();
+    }
+
+    public async Task<IList<TEntity>> GetAllAsync<TEntity>() where TEntity : class
+    {
+        return await base.Set<TEntity>().ToListAsync();
     }
 }

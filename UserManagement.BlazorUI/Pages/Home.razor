@@ -1,0 +1,50 @@
+﻿@page "/"
+
+@using UserManagement.BlazorUI.APIService
+@using UserManagement.Web.Models.Users
+@inject UserAPiService UserService
+
+<h3>User List</h3>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Forename</th>
+                <th>Surname</th>
+                <th>Email</th>
+                <th>Date of Birth</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Forename</td>
+                    <td>@user.Surname</td>
+                    <td>@user.Email</td>
+                    <td>@user.DateOfBirth.ToShortDateString()</td>
+                    <td>@user.IsActive</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<UserListItemViewModel>? users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await UserService.GetUsersAsync();
+    }
+}
+
