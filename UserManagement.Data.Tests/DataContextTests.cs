@@ -1,6 +1,5 @@
 using System.Linq;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using UserManagement.Models;
 
 namespace UserManagement.Data.Tests;
@@ -45,7 +44,5 @@ public class DataContextTests
         result.Should().NotContain(s => s.Email == entity.Email);
     }
 
-
-    private DataContext CreateContext() => new DataContext(new DbContextOptions<DataContext>());
-
+    private DataContext CreateContext() => new();
 }

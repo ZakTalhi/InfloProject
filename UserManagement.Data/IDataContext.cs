@@ -14,7 +14,7 @@ public interface IDataContext
     /// <returns></returns>
     IQueryable<TEntity> GetAll<TEntity>() where TEntity : class;
 
-    //Task<IList<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
+    Task<IList<TEntity>> GetAllAsync<TEntity>() where TEntity : class;
     /// <summary>
     /// Create a new item
     /// </summary>

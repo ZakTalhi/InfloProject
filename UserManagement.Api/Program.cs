@@ -1,16 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using UserManagement.Data;
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<DataContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddDbContext<DataContext>(options =>
-options.UseSqlServer("DefaultConnection", b => b.MigrationsAssembly("UserManagement.Data")));
-
 
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>

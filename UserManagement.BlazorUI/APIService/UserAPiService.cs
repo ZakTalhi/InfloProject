@@ -14,18 +14,16 @@ public class UserAPiService
 
     public async Task<List<UserListItemViewModel>> GetUsersAsync()
     {
-        
-            var response = await _httpClient.GetAsync("api/users");
-            response.EnsureSuccessStatusCode();
+        var response = await _httpClient.GetAsync("users");
+        response.EnsureSuccessStatusCode();
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<UserListItemViewModel>>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            if (result == null)
-            {
-                return new List<UserListItemViewModel>();
-            }
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<List<UserListItemViewModel>>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if(result == null)
+        {
+            return new List<UserListItemViewModel>();
+        }
 
-            return result;
-         
+        return result;
     }
 }
