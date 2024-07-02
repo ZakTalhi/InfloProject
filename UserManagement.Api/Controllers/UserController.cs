@@ -4,7 +4,7 @@ using UserManagement.Services.Domain.Interfaces;
 
 namespace UserManagement.Api.Controllers;
 
-[Route("users")]
+[Route("api/users")]
 [ApiController]
 public class UserController : Controller
 {
