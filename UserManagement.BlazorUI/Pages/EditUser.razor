@@ -45,7 +45,7 @@ else
     [Parameter]
     public int userId { get; set; }
 
-    private UserListItemViewModel user = new UserListItemViewModel()
+    private UserListItemViewModel? user = new UserListItemViewModel()
         {
             Forename = "",
             Surname = "",
@@ -54,12 +54,22 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        user = await UserService.GetUserAsync(userId);
+        if (userId == 0)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            user = await UserService.GetUserAsync(userId);
+        }
     }
 
     private async Task HandleValidSubmit()
     {
-        await UserService.UpdateUserAsync(user);
+        if (user != null && user.Id != 0)
+        {
+            await UserService.UpdateUserAsync(user);
+        }        
         Navigation.NavigateTo("/");
     }
 

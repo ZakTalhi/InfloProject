@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using System.Text.Json; 
+using System.Text.Json;
 using UserManagement.Web.Models.Users;
 
 namespace UserManagement.BlazorUI.APIService;
@@ -15,58 +15,93 @@ public class UserAPiService
 
     public async Task<List<UserListItemViewModel>> GetUsersAsync()
     {
-        var response = await _httpClient.GetAsync("users");
-        response.EnsureSuccessStatusCode();
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-        var result = JsonSerializer.Deserialize<List<UserListItemViewModel>>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        if(result == null)
+        try
         {
+            var response = await _httpClient.GetAsync("users");
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<List<UserListItemViewModel>>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return result ?? new List<UserListItemViewModel>();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching users: {ex.Message}");
             return new List<UserListItemViewModel>();
         }
-
-        return result;
     }
 
-    public async Task<UserListItemViewModel> GetUserAsync(int id)
+    public async Task<UserListItemViewModel?> GetUserAsync(int id)
     {
-        var response = await _httpClient.GetAsync($"users/{id}");
-        response.EnsureSuccessStatusCode();
-
-        var responseContent = await response.Content.ReadAsStringAsync();
-        var result = JsonSerializer.Deserialize<UserListItemViewModel>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-       if(result == null)
+        try
         {
-            return new UserListItemViewModel()
-            {
-                Forename = "",
-                Surname = "",
-                Email = "",
-            };
-        }
+            var response = await _httpClient.GetAsync($"users/{id}");
+            response.EnsureSuccessStatusCode();
 
-        return result;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<UserListItemViewModel>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (result == null)
+            {
+                return new UserListItemViewModel
+                {
+                    Forename = string.Empty,
+                    Surname = string.Empty,
+                    Email = string.Empty
+                };
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching user with ID {id}: {ex.Message}");
+            return null;
+        }
     }
 
     public async Task<bool> CreateUserAsync(UserListItemViewModel user)
     {
-        var response = await _httpClient.PostAsJsonAsync("users", user);
-        response.EnsureSuccessStatusCode();
-        return true;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("users", user);
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error creating user: {ex.Message}");
+            return false;
+        }
     }
 
     public async Task<bool> UpdateUserAsync(UserListItemViewModel user)
     {
-        var response = await _httpClient.PutAsJsonAsync($"users/{user.Id}", user);
-        response.EnsureSuccessStatusCode();
-        return true;
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync($"users/{user.Id}", user);
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating user with ID {user.Id}: {ex.Message}");
+            return false;
+        }
     }
 
     public async Task<bool> DeleteUserAsync(long id)
     {
-        var response = await _httpClient.DeleteAsync($"users/{id}");
-        response.EnsureSuccessStatusCode();
-
-        return true;
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"users/{id}");
+            response.EnsureSuccessStatusCode();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting user with ID {id}: {ex.Message}");
+            return false;
+        }
     }
 }
+
