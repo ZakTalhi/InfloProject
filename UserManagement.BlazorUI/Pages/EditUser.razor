@@ -60,11 +60,11 @@ else
     private async Task HandleValidSubmit()
     {
         await UserService.UpdateUserAsync(user);
-        Navigation.NavigateTo("/users");
+        Navigation.NavigateTo("/");
     }
 
     private void Cancel()
     {
-        Navigation.NavigateTo("/users");
+        Navigation.NavigateTo("/");
     }
 }

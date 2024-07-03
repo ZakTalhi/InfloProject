@@ -46,11 +46,11 @@
     private async Task HandleValidSubmit()
     {
         await UserService.CreateUserAsync(newUser);
-        Navigation.NavigateTo("/users");
+        Navigation.NavigateTo("/");
     }
 
     private void Cancel()
     {
-        Navigation.NavigateTo("/users");
+        Navigation.NavigateTo("/");
     }
 }
