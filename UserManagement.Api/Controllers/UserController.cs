@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using UserManagement.Models;
 using UserManagement.Services.Domain.Interfaces; 
 
 namespace UserManagement.Api.Controllers;
@@ -33,6 +34,35 @@ public class UserController : Controller
         var user = _userService.GetById(id);
         return Ok(user);
     }
+
+    [HttpPost]
+    public IActionResult CreateUser([FromBody] User user)
+    {
+        _userService.Upsert(user);
+        return Ok();
+    }
+
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateUser(long id, [FromBody] User user)
+    {
+        _userService.Upsert(user);
+        return Ok();
+    }
+
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteUser(long id)
+    {
+        var user = _userService.GetById(id);
+        if(user == null)
+        {
+            return NotFound();
+        }
+        _userService.Delete(user);
+        return Ok();
+    }
+
 
     [HttpGet("Audits")]
     public IActionResult GetUserAudits()

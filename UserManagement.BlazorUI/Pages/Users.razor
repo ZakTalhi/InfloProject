@@ -2,8 +2,11 @@
 @using UserManagement.BlazorUI.APIService
 @using UserManagement.Web.Models.Users
 @inject UserAPiService UserService
+@inject NavigationManager Navigation
 
 <h3>User List</h3>
+
+<button class="btn btn-primary" @onclick="AddUser">Add User</button>
 
 @if (users == null)
 {
@@ -20,6 +23,7 @@ else
                 <th>Email</th>
                 <th>Date of Birth</th>
                 <th>Active</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -31,7 +35,11 @@ else
                     <td>@user.Surname</td>
                     <td>@user.Email</td>
                     <td>@user.DateOfBirth.ToShortDateString()</td>
-                    <td>@user.IsActive</td>
+                    <td>@(user.IsActive?"Active":"Inactive") </td>
+                    <td>
+                        <button class="btn btn-secondary" @onclick="() => EditUser(user.Id)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -43,6 +51,22 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        users = await UserService.GetUsersAsync();
+    }
+
+    private void AddUser()
+    {
+        Navigation.NavigateTo("/add-user");
+    }
+
+    private void EditUser(long userId)
+    {
+        Navigation.NavigateTo($"/edit-user/{userId}");
+    }
+
+    private async Task DeleteUser(long userId)
+    {
+        await UserService.DeleteUserAsync(userId);
         users = await UserService.GetUsersAsync();
     }
 }
