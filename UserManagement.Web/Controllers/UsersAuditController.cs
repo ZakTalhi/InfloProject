@@ -64,77 +64,10 @@ public class UsersAuditController : Controller
             AuditLogType = userAudit.AuditLogType,
         };
         return View(vm);
-    }
-
-
+    }    
 
     [HttpGet("AuditByUser/{userId}")]
     public IActionResult AuditByUser(long userId)
-    {
-        var items = _userAuditService.GetByUserId(userId).OrderByDescending(o => o.CreatedDate);
-
-
-        var userAuditListItems = items.Select(p => new UserAuditListItemViewModel
-        {
-            Id = p.Id,
-            Forename = p.Forename,
-            Surname = p.Surname,
-            DateOfBirth = p.DateOfBirth,
-            Email = p.Email,
-            CreatedDate = p.CreatedDate,
-            IsActive = p.IsActive,
-            AuditLogType = p.AuditLogType,
-            UserId = p.UserId,
-        });
-        var model = new UserAuditListViewModel
-        {
-            Items = userAuditListItems.ToList()
-        };
-
-        return View(model);
-    }
-
-    [HttpGet("AuditByUser2/{userId}")]
-    public IActionResult AuditByUser2(long userId)
-    {
-        var items = _userAuditService.GetByUserId(userId).OrderByDescending(o => o.CreatedDate);
-
-
-        var userAuditListItems = items.Select(p => new UserAuditListItemViewModel
-        {
-            Id = p.Id,
-            Forename = p.Forename,
-            Surname = p.Surname,
-            DateOfBirth = p.DateOfBirth,
-            Email = p.Email,
-            CreatedDate = p.CreatedDate,
-            IsActive = p.IsActive,
-            AuditLogType = p.AuditLogType,
-            UserId = p.UserId,
-        });
-        var model = new UserAuditListViewModel();
-        var user = _userService.GetById(userId);
-        if (user != null)
-        {
-            model.Items.Add(new UserAuditListItemViewModel
-            {
-                Email = user.Email,
-                Forename = user.Forename,
-                DateOfBirth = user.DateOfBirth,
-                Surname = user.Surname,
-                UserId = user.Id,
-                IsActive = user.IsActive,
-
-            });
-
-        }
-        model.Items.AddRange(userAuditListItems.ToList());
-
-        return View(model);
-    }
-
-    [HttpGet("AuditByUser3/{userId}")]
-    public IActionResult AuditByUser3(long userId)
     {
         var items = _userAuditService.GetByUserId(userId).OrderByDescending(o => o.CreatedDate);
 
