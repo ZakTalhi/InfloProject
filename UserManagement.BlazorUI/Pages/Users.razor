@@ -6,6 +6,8 @@
 
 <h3>User List</h3>
 
+<button class="btn btn-primary" @onclick="AuditsLog">Audit Logs</button>
+
 <button class="btn btn-primary" @onclick="AddUser">Add User</button>
 
 @if (users == null)
@@ -39,6 +41,7 @@ else
                     <td>
                         <button class="btn btn-secondary" @onclick="() => EditUser(user.Id)">Edit</button>
                         <button class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">Delete</button>
+                        <button class="btn btn-danger" @onclick="() => UserAudit(user.Id)">Audit</button>
                     </td>
                 </tr>
             }
@@ -59,6 +62,11 @@ else
         Navigation.NavigateTo("/add-user");
     }
 
+    private void AuditsLog()
+    {
+        Navigation.NavigateTo("/audits");
+    }
+
     private void EditUser(long userId)
     {
         Navigation.NavigateTo($"/edit-user/{userId}");
@@ -69,4 +77,10 @@ else
         await UserService.DeleteUserAsync(userId);
         users = await UserService.GetUsersAsync();
     }
+    private void UserAudit(long userId)
+    {
+        Navigation.NavigateTo($"/user-audit-timeline/{userId}");
+    }
+
+    
 }

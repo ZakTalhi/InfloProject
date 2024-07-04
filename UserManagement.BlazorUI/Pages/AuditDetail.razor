@@ -1,0 +1,61 @@
+﻿@page "/audit/{AuditId:int}"
+@using UserManagement.BlazorUI.APIService
+@using UserManagement.Models
+@inject NavigationManager Navigation
+@inject UserAPiService UserService
+
+
+
+<div class="container mt-5">
+    <h2>User Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@User.Forename @User.Surname</h5>
+            <dl class="row">
+                <dt class="col-sm-3">Forename</dt>
+                <dd class="col-sm-9">@User.Forename</dd>
+
+                <dt class="col-sm-3">Surname</dt>
+                <dd class="col-sm-9">@User.Surname</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@User.Email</dd>
+
+                <dt class="col-sm-3">Date of Birth</dt>
+                <dd class="col-sm-9">@User.DateOfBirth.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Audit Type</dt>
+                <dd class="col-sm-9">@User.AuditLogType.ToString()</dd>
+
+                <dt class="col-sm-3">Active</dt>
+                <dd class="col-sm-9">
+                    @if (User.IsActive)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </dd>
+            </dl>
+            <button class="btn btn-secondary" @onclick="NavigateBackToList">Back to List</button>
+        </div>
+    </div>
+</div>
+@code {
+    [Parameter]
+    public long AuditId { get; set; }
+
+    private UserAudit User { get; set; } = new UserAudit();
+
+    protected override async Task OnInitializedAsync()
+    {
+        User = await UserService.GetAuditAsync(AuditId);
+    }
+
+    private void NavigateBackToList()
+    {
+        Navigation.NavigateTo("/audits");
+    }
+}

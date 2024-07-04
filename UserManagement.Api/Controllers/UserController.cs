@@ -32,6 +32,20 @@ public class UserController : Controller
     public IActionResult GetUserById(int id)
     {
         var user = _userService.GetById(id);
+        if(user == null)
+        {
+            return NotFound();
+        }
+        _userAuditService.Save(new Models.UserAudit
+        {
+            AuditLogType = Data.Common.AuditLogType.View,
+            DateOfBirth = user.DateOfBirth,
+            Email = user.Email,
+            Forename = user.Forename,
+            IsActive = user.IsActive,
+            UserId = user.Id,
+            Surname = user.Surname
+        });
         return Ok(user);
     }
 
@@ -59,6 +73,18 @@ public class UserController : Controller
         {
             return NotFound();
         }
+
+        _userAuditService.Save(new Models.UserAudit
+        {
+            AuditLogType = Data.Common.AuditLogType.Delete,
+            DateOfBirth = user.DateOfBirth,
+            Email = user.Email,
+            Forename = user.Forename,
+            IsActive = user.IsActive,
+            UserId = user.Id,
+            Surname = user.Surname
+        });
+
         _userService.Delete(user);
         return Ok();
     }
